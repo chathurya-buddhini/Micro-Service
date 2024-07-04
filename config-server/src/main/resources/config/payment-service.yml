@@ -1,0 +1,31 @@
+
+server:
+  port: 8081
+
+spring:
+  application:
+    name: payment-service
+
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/highway?createDatabaseIfNotExist=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: Chathu@2004
+    hikari:
+      maximum-pool-size:  20
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    generate-ddl: true
+    show-sql: false
+    database: mysql
+    hibernate:
+      ddl-auto: update
+
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
