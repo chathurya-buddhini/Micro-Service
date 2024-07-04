@@ -36,6 +36,7 @@ public class VehicleController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public VehicleDTO saveVehicle(@Valid @RequestBody VehicleDTO vehicleDTO){
+        System.out.println(vehicleDTO);
         return vehicleService.saveVehicle(vehicleDTO);
     }
 

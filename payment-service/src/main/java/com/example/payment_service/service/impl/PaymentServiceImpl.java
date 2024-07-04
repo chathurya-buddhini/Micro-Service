@@ -52,36 +52,44 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentDTO savePayment(PaymentDTO paymentDTO) {
-
-        Boolean isTicketNumExist = restTemplate.getForObject("http://ticket-service/ticket/isExit/" + paymentDTO.getTicketid(), Boolean.class);
-        if(Boolean.FALSE.equals(isTicketNumExist)){
-            throw new NotFoundException("Ticket Num : "+paymentDTO.getTicketid()+" doesn't exist");
-        }
-
-        if (paymentDTO.getId() == null || paymentDTO.getId().isEmpty()) {
-            paymentDTO.setId(UUID.randomUUID().toString());
-        }
-
         if (paymentRepo.existsById(paymentDTO.getId())) {
-            throw new DuplicateRecordException("Payment id : " + paymentDTO.getId() + " already exist");
+            throw new DuplicateRecordException("payment id : " + paymentDTO.getId() + " already exist");
         }
-
-
         return transformer.fromPaymentEntity(paymentRepo.save(transformer.toPaymentEntity(paymentDTO)));
+
+//        Boolean isTicketNumExist = restTemplate.getForObject("http://ticket-service/ticket/isExit/" + paymentDTO.getTicketid(), Boolean.class);
+//        if(Boolean.FALSE.equals(isTicketNumExist)){
+//            throw new NotFoundException("Ticket Num : "+paymentDTO.getTicketid()+" doesn't exist");
+//        }
+//
+//        if (paymentDTO.getId() == null || paymentDTO.getId().isEmpty()) {
+//            paymentDTO.setId(UUID.randomUUID().toString());
+//        }
+//
+//        if (paymentRepo.existsById(paymentDTO.getId())) {
+//            throw new DuplicateRecordException("Payment id : " + paymentDTO.getId() + " already exist");
+//        }
+//
+//
+//        return transformer.fromPaymentEntity(paymentRepo.save(transformer.toPaymentEntity(paymentDTO)));
     }
 
     @Override
     public void updatePayment(PaymentDTO paymentDTO) {
         if (!paymentRepo.existsById(paymentDTO.getId())) {
-            throw new NotFoundException("Payment id : " + paymentDTO.getId() + " doesn't exist");
+            throw new NotFoundException("paymant id : " + paymentDTO.getId() + " doesn't exist");
         }
-
-        PaymentEntity payment = paymentRepo.findById(paymentDTO.getId()).orElseThrow(
-                () -> new NotFoundException("PaymentId : "+paymentDTO.getId()+" doesn't exist")
-        );
-
-        payment.setPurchasedDate(payment.getPurchasedDate());
-        paymentRepo.save(payment);
+        paymentRepo.save(transformer.toPaymentEntity(paymentDTO));
+//        if (!paymentRepo.existsById(paymentDTO.getId())) {
+//            throw new NotFoundException("Payment id : " + paymentDTO.getId() + " doesn't exist");
+//        }
+//
+//        PaymentEntity payment = paymentRepo.findById(paymentDTO.getId()).orElseThrow(
+//                () -> new NotFoundException("PaymentId : "+paymentDTO.getId()+" doesn't exist")
+//        );
+//
+//        payment.setPurchasedDate(payment.getPurchasedDate());
+//        paymentRepo.save(payment);
     }
 
     @Override

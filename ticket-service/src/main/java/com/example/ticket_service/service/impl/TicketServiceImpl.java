@@ -56,35 +56,43 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public TicketDTO saveTicket(TicketDTO ticketDTO) {
-
-        if (ticketRepo.existsById(String.valueOf(ticketDTO.getTicketId()))) {
-            throw new DuplicateRecordException("Ticket id : " + ticketDTO.getTicketId() + " already exist");
+        if (ticketRepo.existsById(ticketDTO.getTicketId())) {
+            throw new DuplicateRecordException("ticket id : " + ticketDTO.getTicketId() + " already exist");
         }
-
-        Boolean isUserExit = restTemplate.getForObject("http://user-service/user/isExit/" + ticketDTO.getUser_nic(), Boolean.class);
-        if(Boolean.FALSE.equals(isUserExit)){
-            throw new NotFoundException("User Nic : "+ticketDTO.getUser_nic()+" doesn't exist");
-        }
-
-        if (ticketDTO.getTicketId() == null || ticketDTO.getTicketId().isEmpty()) {
-            ticketDTO.setTicketId(UUID.randomUUID().toString());
-        }
-
         return transformer.fromTicketEntity(ticketRepo.save(transformer.toTicketEntity(ticketDTO)));
+
+//        if (ticketRepo.existsById(String.valueOf(ticketDTO.getTicketId()))) {
+//            throw new DuplicateRecordException("Ticket id : " + ticketDTO.getTicketId() + " already exist");
+//        }
+//
+//        Boolean isUserExit = restTemplate.getForObject("http://user-service/user/isExit/" + ticketDTO.getUser_nic(), Boolean.class);
+//        if(Boolean.FALSE.equals(isUserExit)){
+//            throw new NotFoundException("User Nic : "+ticketDTO.getUser_nic()+" doesn't exist");
+//        }
+//
+//        if (ticketDTO.getTicketId() == null || ticketDTO.getTicketId().isEmpty()) {
+//            ticketDTO.setTicketId(UUID.randomUUID().toString());
+//        }
+//
+//        return transformer.fromTicketEntity(ticketRepo.save(transformer.toTicketEntity(ticketDTO)));
     }
 
     @Override
     public void updateTicket(TicketDTO ticketDTO) {
         if (!ticketRepo.existsById(ticketDTO.getTicketId())) {
-            throw new NotFoundException("Ticket id : " + ticketDTO.getTicketId() + " doesn't exist");
+            throw new NotFoundException("ticket id : " + ticketDTO.getTicketId() + " doesn't exist");
         }
-
-        TicketEntity ticketData = ticketRepo.findById(ticketDTO.getTicketId()).orElseThrow(
-                () -> new NotFoundException("Ticket Id : "+ticketDTO.getTicketId()+" doesn't exist")
-        );
-        TicketEntity ticketEntity = transformer.toTicketEntity(ticketDTO);
-        ticketEntity.setIssuedDate(ticketData.getIssuedDate());
-        ticketRepo.save(ticketEntity);
+        ticketRepo.save(transformer.toTicketEntity(ticketDTO));
+//        if (!ticketRepo.existsById(ticketDTO.getTicketId())) {
+//            throw new NotFoundException("Ticket id : " + ticketDTO.getTicketId() + " doesn't exist");
+//        }
+//
+//        TicketEntity ticketData = ticketRepo.findById(ticketDTO.getTicketId()).orElseThrow(
+//                () -> new NotFoundException("Ticket Id : "+ticketDTO.getTicketId()+" doesn't exist")
+//        );
+//        TicketEntity ticketEntity = transformer.toTicketEntity(ticketDTO);
+//        ticketEntity.setIssuedDate(ticketData.getIssuedDate());
+//        ticketRepo.save(ticketEntity);
     }
 
     @Override

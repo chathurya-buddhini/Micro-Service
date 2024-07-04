@@ -51,26 +51,31 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public VehicleDTO saveVehicle(VehicleDTO vehicleDTO) {
-
         if (vehicleRepo.existsById(vehicleDTO.getVehicleId())) {
-            throw new DuplicateRecordException("Vehicle id : " + vehicleDTO.getVehicleId() + " already exist");
+            throw new DuplicateRecordException("vehicle id : " + vehicleDTO.getVehicleId() + " already exist");
         }
-
-        Boolean isUserExit = restTemplate.getForObject("http://user-service/user/isExit/" + vehicleDTO.getUserid(), Boolean.class);
-        if(Boolean.FALSE.equals(isUserExit)){
-            throw new NotFoundException("User Nic : "+vehicleDTO.getUserid()+" doesn't exist");
-        }
-
         return transformer.fromVehicleEntity(vehicleRepo.save(transformer.toVehicleEntity(vehicleDTO)));
+//        if (vehicleRepo.existsById(vehicleDTO.getVehicleId())) {
+//            throw new DuplicateRecordException("Vehicle id : " + vehicleDTO.getVehicleId() + " already exist");
+//        }
+//
+//        Boolean isUserExit = restTemplate.getForObject("http://user-service/user/isExit/" + vehicleDTO.getUserid(), Boolean.class);
+//        if(Boolean.FALSE.equals(isUserExit)){
+//            throw new NotFoundException("User Nic : "+vehicleDTO.getUserid()+" doesn't exist");
+//        }
+//
+//        return transformer.fromVehicleEntity(vehicleRepo.save(transformer.toVehicleEntity(vehicleDTO)));
     }
+
 
     @Override
     public void updateVehicle(VehicleDTO vehicleDTO) {
-        if (!vehicleRepo.existsById(vehicleDTO.getUserid())) {
+        if (!vehicleRepo.existsById(vehicleDTO.getVehicleId())) {
             throw new NotFoundException("Vehicle id : " + vehicleDTO.getVehicleId() + " doesn't exist");
         }
         vehicleRepo.save(transformer.toVehicleEntity(vehicleDTO));
     }
+
 
     @Override
     public void deleteVehicle(String vehicleId) {

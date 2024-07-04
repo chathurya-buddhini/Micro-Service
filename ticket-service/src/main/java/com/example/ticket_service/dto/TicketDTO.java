@@ -47,3 +47,15 @@ public class TicketDTO {
 
 
 }
+//    {
+//       "ticketId": "TI001",
+//        "vehicleId": "V001",
+//            "user-nic": "U001",
+//            "totalPrice": 9500.00,
+//            "issuedDate": "",
+//            "entres": "kaduvela",
+//            "exit_name": "Mathara",
+//            "departureTime": "10:00:00",
+//            "arrivalTime": "12:00:00",
+//            "status": "Active"
+//    }

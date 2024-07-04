@@ -31,6 +31,12 @@ public class VehicleEntity {
 
     @Column(name = "make")
     private String make;
-
+//    {
+//        "vehicleId": "V001",
+//            "model": "car",
+//            "userid": "U001",
+//            "registrationNumber": "Rg-001",
+//            "make": "japan"
+//    }
 
 }

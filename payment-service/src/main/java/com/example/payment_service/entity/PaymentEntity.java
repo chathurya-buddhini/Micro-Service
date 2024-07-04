@@ -29,8 +29,14 @@ public class PaymentEntity {
 
     @Column(name = "type")
     private String paymentType;
-
-
+//
+//    {
+//        "id": "P001",
+//            "ticketid": "TI001",
+//            "amount": 9500.00,
+//            "purchasedDate": "2024-07-04",
+//            "paymentType": "cash"
+//    }
 
 }
 
